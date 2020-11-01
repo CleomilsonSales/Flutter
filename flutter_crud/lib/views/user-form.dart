@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_crud/models/user.dart';
 import 'package:flutter_crud/provider/users.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //atalho para mudar de statelss para stateful => ctrl+.
 class UserForm extends StatefulWidget {
@@ -20,6 +21,15 @@ class _UserFormState extends State<UserForm> {
       _formData['name'] = user.name;
       _formData['email'] = user.email;
       _formData['avatarUrl'] = user.avatarUrl;
+    }
+  }
+
+  void _launchURL() async {
+    const url = 'https://pixabay.com/pt/images/search/avatar/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
   }
 
@@ -105,6 +115,16 @@ class _UserFormState extends State<UserForm> {
                   labelText: 'Endereço do Avatar',
                 ),
                 onSaved: (value) => _formData['avatarUrl'] = value,
+              ),
+              FlatButton(
+                onPressed: _launchURL,
+                child: Text(
+                  'Link para pegar Avatares: https://pixabay.com/pt/',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.green,
+                  ),
+                ),
               ),
             ],
           ),

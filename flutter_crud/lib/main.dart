@@ -20,6 +20,9 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        //tirando mensagem de debug
+        debugShowCheckedModeBanner: false,
+        //--
         title: 'Estudo Flutter',
         theme: ThemeData(
           primarySwatch: Colors.blue,
