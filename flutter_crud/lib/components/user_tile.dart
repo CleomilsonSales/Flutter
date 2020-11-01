@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_crud/models/user.dart';
+import 'package:flutter_crud/provider/users.dart';
 import 'package:flutter_crud/routes/app_routes.dart';
+import 'package:provider/provider.dart';
 
 class UserTile extends StatelessWidget {
   final User user;
@@ -33,7 +35,43 @@ class UserTile extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.delete),
               color: Colors.red,
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text('Excluir Usuário'),
+                    content: Text('Deseja realmente EXCLUIR usuário?'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('Não'),
+                        onPressed: () => Navigator.of(context).pop(false),
+                        //no pop posso retornar o que eu quiser
+                        /* forma antiga de chamar o não do popup
+                        onPressed: () {
+                          //pra fechar o popup
+                          Navigator.of(context).pop();
+                        },*/
+                      ),
+                      FlatButton(
+                        child: Text('Sim'),
+                        onPressed: () => Navigator.of(context).pop(true),
+                        /* forma antiga de chamar o remove
+                        onPressed: () {
+                          Provider.of<Users>(context, listen: false)
+                              .remove(user);
+                          Navigator.of(context).pop();
+
+                        },*/
+                      ),
+                    ],
+                  ),
+                  // then nesse caso e outra forma de pegar a resposta do popup
+                ).then((confimed) {
+                  if (confimed) {
+                    Provider.of<Users>(context, listen: false).remove(user);
+                  }
+                });
+              },
             )
           ],
         ),
